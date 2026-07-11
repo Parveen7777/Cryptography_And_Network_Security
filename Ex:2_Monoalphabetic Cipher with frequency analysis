@@ -1,0 +1,38 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    string key = "QWERTYUIOPASDFGHJKLZXCVBNM";
+    string text, cipher = "";
+    int f[26] = {0};
+
+    cout << "Enter text: ";
+    getline(cin, text);
+
+    for (char c : text) {
+        if (c >= 'A' && c <= 'Z') {
+            cipher += key[c - 'A'];
+            f[key[c - 'A'] - 'A']++;
+        }
+        else if (c >= 'a' && c <= 'z') {
+            cipher += key[c - 'a'];
+            f[key[c - 'a'] - 'A']++;
+        }
+        else
+            cipher += c;
+    }
+
+    cout << "Cipher: " << cipher << endl;
+
+    cout << "Top 3 letters:\n";
+    for (int k = 0; k < 3; k++) {
+        int max = -1, pos = -1;
+        for (int i = 0; i < 26; i++)
+            if (f[i] > max) {
+                max = f[i];
+                pos = i;
+            }
+        cout << char(pos + 'A') << " = " << max << endl;
+        f[pos] = -1;
+    }
+}
