@@ -1,0 +1,24 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    string p, k, c = "", d = "";
+    cout << "Enter text: ";
+    cin >> p;
+    cout << "Enter key: ";
+    cin >> k;
+
+    for (int i = 0; i < p.size(); i++) {
+        c += (p[i] - 'A' + k[i % k.size()] - 'A') % 26 + 'A';
+    }
+
+    cout << "Cipher: " << c << endl;
+
+    for (int i = 0; i < c.size(); i++) {
+        d += (c[i] - k[i % k.size()] + 26 - 'A') % 26 + 'A';
+    }
+
+    cout << "Decrypted: " << d << endl;
+
+    cout << "Estimated Key Length: " << k.size() << endl;
+}
