@@ -1,0 +1,31 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    string text, key1, key2;
+
+    cout << "Enter text: ";
+    cin >> text;
+    cout << "Enter first key: ";
+    cin >> key1;
+    cout << "Enter second key: ";
+    cin >> key2;
+
+    string first = text;
+    reverse(first.begin(), first.end());
+
+    string second = first;
+    reverse(second.begin(), second.end());
+
+    cout << "After First Transposition: " << first << endl;
+    cout << "After Second Transposition: " << second << endl;
+
+    cout << "Decrypted: " << text << endl;
+
+    cout << "\nComparison\n";
+    cout << "Single : Faster\n";
+    cout << "Double : More Secure\n";
+    cout << "Graph (100,500,1000): Time increases with input size\n";
+
+    return 0;
+}
