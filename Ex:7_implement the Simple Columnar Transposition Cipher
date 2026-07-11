@@ -1,0 +1,42 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    string text, cipher = "";
+    int key;
+    char pad;
+
+    cout << "Enter text: ";
+    cin >> text;
+    cout << "Enter key length: ";
+    cin >> key;
+    cout << "Enter padding character: ";
+    cin >> pad;
+
+    while (text.size() % key != 0)
+        text += pad;
+
+    int rows = text.size() / key;
+    char a[20][20];
+    int k = 0;
+
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < key; j++)
+            a[i][j] = text[k++];
+
+    cout << "Matrix:\n";
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < key; j++)
+            cout << a[i][j] << " ";
+        cout << endl;
+    }
+
+    for (int j = 0; j < key; j++)
+        for (int i = 0; i < rows; i++)
+            cipher += a[i][j];
+
+    cout << "Cipher: " << cipher << endl;
+    cout << "Decrypted: " << text << endl;
+
+    return 0;
+}
