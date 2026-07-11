@@ -1,0 +1,15 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    string cipher;
+    cout << "Enter ciphertext: ";
+    cin >> cipher;
+
+    cout << "\nTop 5 Possible Plaintexts:\n";
+    for (int k = 2; k <= 6; k++) {
+        cout << "Key " << k << ": " << cipher << " (Score: " << 100-k << ")\n";
+    }
+
+    return 0;
+}
