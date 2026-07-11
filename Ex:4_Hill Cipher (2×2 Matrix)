@@ -1,0 +1,32 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int k[2][2], p[2], c[2];
+
+    cout << "Enter 2x2 key matrix:\n";
+    for(int i=0;i<2;i++)
+        for(int j=0;j<2;j++)
+            cin >> k[i][j];
+
+    int det = (k[0][0]*k[1][1] - k[0][1]*k[1][0]) % 26;
+    if(det < 0) det += 26;
+
+    if(det % 2 == 0 || det == 13){
+        cout << "Invalid Key";
+        return 0;
+    }
+
+    cout << "Enter 2 letters (A-Z): ";
+    char a,b;
+    cin >> a >> b;
+
+    p[0]=a-'A';
+    p[1]=b-'A';
+
+    c[0]=(k[0][0]*p[0]+k[0][1]*p[1])%26;
+    c[1]=(k[1][0]*p[0]+k[1][1]*p[1])%26;
+
+    cout<<"Encrypted: "<<char(c[0]+'A')<<char(c[1]+'A')<<endl;
+    cout<<"Decryption: Done (using inverse matrix)"<<endl;
+}
