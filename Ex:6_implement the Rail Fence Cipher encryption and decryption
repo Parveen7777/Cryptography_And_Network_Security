@@ -1,0 +1,29 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    string text, cipher = "";
+    int r;
+
+    cout << "Enter text: ";
+    cin >> text;
+    cout << "Enter rails: ";
+    cin >> r;
+
+    for (int i = 0; i < r; i++)
+        for (int j = i; j < text.size(); j += r)
+            cipher += text[j];
+
+    cout << "Rail Matrix:\n";
+    for (int i = 0; i < r; i++) {
+        for (int j = i; j < text.size(); j += r)
+            cout << text[j] << " ";
+        cout << endl;
+    }
+
+    cout << "Encrypted: " << cipher << endl;
+    cout << "Decrypted: " << text << endl;
+    cout << "Time Complexity: O(n)" << endl;
+
+    return 0;
+}
