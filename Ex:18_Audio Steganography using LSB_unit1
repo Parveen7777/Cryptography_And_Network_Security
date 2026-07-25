@@ -1,0 +1,109 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+// Hide Message
+void hideMessage() {
+    string inputAudio, outputAudio, message;
+
+    cout << "Enter Input WAV File: ";
+    cin >> inputAudio;
+
+    cout << "Enter Output WAV File: ";
+    cin >> outputAudio;
+
+    cin.ignore();
+    cout << "Enter Secret Message: ";
+    getline(cin, message);
+
+    message += '\0';
+
+    ifstream in(inputAudio, ios::binary);
+    ofstream out(outputAudio, ios::binary);
+
+    if (!in || !out) {
+        cout << "File Error!";
+        return;
+    }
+
+    char ch;
+
+    // Copy WAV header (44 bytes)
+    for (int i = 0; i < 44; i++) {
+        in.get(ch);
+        out.put(ch);
+    }
+
+    // Hide message using LSB
+    for (char c : message) {
+        for (int i = 7; i >= 0; i--) {
+            in.get(ch);
+            ch = (ch & 0xFE) | ((c >> i) & 1);
+            out.put(ch);
+        }
+    }
+
+    while (in.get(ch))
+        out.put(ch);
+
+    in.close();
+    out.close();
+
+    cout << "Message Hidden Successfully!";
+}
+
+// Extract Message
+void extractMessage() {
+    string audioFile;
+
+    cout << "Enter WAV File: ";
+    cin >> audioFile;
+
+    ifstream in(audioFile, ios::binary);
+
+    if (!in) {
+        cout << "File Error!";
+        return;
+    }
+
+    in.seekg(44);
+
+    char ch;
+
+    cout << "Hidden Message: ";
+
+    while (true) {
+        char c = 0;
+
+        for (int i = 7; i >= 0; i--) {
+            in.get(ch);
+            c |= (ch & 1) << i;
+        }
+
+        if (c == '\0')
+            break;
+
+        cout << c;
+    }
+
+    in.close();
+}
+
+int main() {
+    int choice;
+
+    cout << "1. Hide Message\n";
+    cout << "2. Extract Message\n";
+    cout << "Enter Choice: ";
+    cin >> choice;
+
+    if (choice == 1)
+        hideMessage();
+    else if (choice == 2)
+        extractMessage();
+    else
+        cout << "Invalid Choice!";
+
+    return 0;
+}
