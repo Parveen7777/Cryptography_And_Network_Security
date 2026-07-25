@@ -1,0 +1,28 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string role;
+
+    cout << "Enter Role: ";
+    cin >> role;
+
+    if (role == "Admin" || role == "admin") {
+        cout << "Permissions:\n";
+        cout << "Read\nWrite\nDelete";
+    }
+    else if (role == "Faculty" || role == "faculty") {
+        cout << "Permissions:\n";
+        cout << "Read\nWrite";
+    }
+    else if (role == "Student" || role == "student") {
+        cout << "Permissions:\n";
+        cout << "Read Only";
+    }
+    else {
+        cout << "Invalid Role";
+    }
+
+    return 0;
+}
