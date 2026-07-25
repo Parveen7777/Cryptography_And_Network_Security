@@ -1,0 +1,36 @@
+#include <iostream>
+#include <ctime>
+using namespace std;
+
+int main() {
+    clock_t start, end;
+    double lsbTime, dctTime;
+
+    // LSB Method
+    start = clock();
+
+    // Simulated processing
+    for (long i = 0; i < 10000000; i++);
+
+    end = clock();
+    lsbTime = double(end - start) / CLOCKS_PER_SEC;
+
+    // Transform Domain (DCT) Method
+    start = clock();
+
+    // Simulated processing
+    for (long i = 0; i < 20000000; i++);
+
+    end = clock();
+    dctTime = double(end - start) / CLOCKS_PER_SEC;
+
+    cout << "\nComparative Study of Steganography Techniques\n";
+    cout << "---------------------------------------------------------------\n";
+    cout << "Technique\tCapacity\tSecurity\tRobustness\tTime(s)\n";
+    cout << "---------------------------------------------------------------\n";
+    cout << "LSB\t\tHigh\t\tLow\t\tLow\t\t" << lsbTime << endl;
+    cout << "DCT\t\tMedium\t\tHigh\t\tHigh\t\t" << dctTime << endl;
+    cout << "---------------------------------------------------------------\n";
+
+    return 0;
+}
