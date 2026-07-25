@@ -1,0 +1,46 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+using namespace std;
+
+int main() {
+    string imageFile;
+
+    cout << "Enter Image File: ";
+    cin >> imageFile;
+
+    ifstream in(imageFile, ios::binary);
+
+    if (!in) {
+        cout << "File Error!";
+        return 0;
+    }
+
+    // Skip BMP header
+    in.seekg(54);
+
+    char ch;
+    int zeroCount = 0, oneCount = 0;
+
+    while (in.get(ch)) {
+        if ((ch & 1) == 0)
+            zeroCount++;
+        else
+            oneCount++;
+    }
+
+    in.close();
+
+    cout << "\nLSB Analysis\n";
+    cout << "0 Bits : " << zeroCount << endl;
+    cout << "1 Bits : " << oneCount << endl;
+
+    int diff = abs(zeroCount - oneCount);
+
+    if (diff < 100)
+        cout << "Result: Hidden Data May Be Present.";
+    else
+        cout << "Result: No Hidden Data Detected.";
+
+    return 0;
+}
