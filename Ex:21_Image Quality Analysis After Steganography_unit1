@@ -1,0 +1,53 @@
+#include <iostream>
+#include <fstream>
+#include <cmath>
+using namespace std;
+
+int main() {
+    string originalImage, stegoImage;
+
+    cout << "Enter Original Image: ";
+    cin >> originalImage;
+
+    cout << "Enter Stego Image: ";
+    cin >> stegoImage;
+
+    ifstream img1(originalImage, ios::binary);
+    ifstream img2(stegoImage, ios::binary);
+
+    if (!img1 || !img2) {
+        cout << "File Error!";
+        return 0;
+    }
+
+    // Skip BMP header
+    img1.seekg(54);
+    img2.seekg(54);
+
+    char ch1, ch2;
+    long long count = 0;
+    double mse = 0;
+
+    while (img1.get(ch1) && img2.get(ch2)) {
+        int diff = (unsigned char)ch1 - (unsigned char)ch2;
+        mse += diff * diff;
+        count++;
+    }
+
+    img1.close();
+    img2.close();
+
+    mse = mse / count;
+
+    double psnr;
+
+    if (mse == 0)
+        psnr = 99;
+    else
+        psnr = 10 * log10((255.0 * 255.0) / mse);
+
+    cout << "\nMean Squared Error (MSE): " << mse << endl;
+    cout << "Peak Signal-to-Noise Ratio (PSNR): " << psnr << " dB" << endl;
+
+    return 0;
+}
