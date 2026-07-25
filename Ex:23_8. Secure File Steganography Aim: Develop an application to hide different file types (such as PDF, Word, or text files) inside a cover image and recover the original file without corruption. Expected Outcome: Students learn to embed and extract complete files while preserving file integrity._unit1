@@ -1,0 +1,126 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+// Hide message in image
+void hide(string input, string output, string message) {
+    ifstream in(input, ios::binary);
+    ofstream out(output, ios::binary);
+
+    if (!in || !out) {
+        cout << "File Error!\n";
+        return;
+    }
+
+    char ch;
+
+    // Copy BMP header
+    for (int i = 0; i < 54; i++) {
+        in.get(ch);
+        out.put(ch);
+    }
+
+    message += '\0';
+
+    for (char c : message) {
+        for (int i = 7; i >= 0; i--) {
+            in.get(ch);
+            ch = (ch & 0xFE) | ((c >> i) & 1);
+            out.put(ch);
+        }
+    }
+
+    while (in.get(ch))
+        out.put(ch);
+
+    in.close();
+    out.close();
+}
+
+// Extract message from image
+string extract(string image) {
+    ifstream in(image, ios::binary);
+
+    if (!in) {
+        return "";
+    }
+
+    in.seekg(54);
+
+    string message = "";
+    char ch;
+
+    while (true) {
+        char c = 0;
+
+        for (int i = 7; i >= 0; i--) {
+            in.get(ch);
+            c |= (ch & 1) << i;
+        }
+
+        if (c == '\0')
+            break;
+
+        message += c;
+    }
+
+    in.close();
+    return message;
+}
+
+int main() {
+    int choice;
+
+    cout << "1. Hide Message\n";
+    cout << "2. Extract Message\n";
+    cout << "Enter Choice: ";
+    cin >> choice;
+
+    if (choice == 1) {
+        string img1, img2, out1, out2, message;
+
+        cout << "Enter First Input Image: ";
+        cin >> img1;
+        cout << "Enter Second Input Image: ";
+        cin >> img2;
+
+        cout << "Enter First Output Image: ";
+        cin >> out1;
+        cout << "Enter Second Output Image: ";
+        cin >> out2;
+
+        cin.ignore();
+        cout << "Enter Secret Message: ";
+        getline(cin, message);
+
+        int mid = message.length() / 2;
+
+        string part1 = message.substr(0, mid);
+        string part2 = message.substr(mid);
+
+        hide(img1, out1, part1);
+        hide(img2, out2, part2);
+
+        cout << "Message Hidden Successfully!";
+    }
+    else if (choice == 2) {
+        string img1, img2;
+
+        cout << "Enter First Stego Image: ";
+        cin >> img1;
+
+        cout << "Enter Second Stego Image: ";
+        cin >> img2;
+
+        string part1 = extract(img1);
+        string part2 = extract(img2);
+
+        cout << "Recovered Message: " << part1 + part2;
+    }
+    else {
+        cout << "Invalid Choice!";
+    }
+
+    return 0;
+}
